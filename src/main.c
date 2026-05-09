@@ -26,6 +26,8 @@ int main(void)
 		.width = 900,
 		.height = 600,
 		.should_clear = 0,
+		.brush = BRUSH_PEN,
+		.should_exit = 0,
 	};
 
 	InputSettings isettings = 
@@ -37,6 +39,7 @@ int main(void)
 		.lettercount = 0,
 		.is_command_ready = 0,
 	};
+
 
 	InitWindow(asettings.width, asettings.height, "sCrib");
 
@@ -51,7 +54,7 @@ int main(void)
 
 	clearcanva(framebuffer, asettings.bgcolor);
 
-	while (!WindowShouldClose())
+	while (!WindowShouldClose() && !asettings.should_exit)
 	{
 		handle_input(&isettings);
 		handle_command(&isettings, &asettings);
@@ -63,23 +66,14 @@ int main(void)
 			lastpos = (Vector2) {-1, -1};
 		}
 
-		BeginTextureMode(framebuffer);
+		if (asettings.should_clear)
+		{
+			clearcanva(framebuffer, asettings.bgcolor);
+			asettings.should_clear = 0;
+		}
 
-			if (asettings.should_clear)
-				ClearBackground(asettings.bgcolor);
-
-			if (should_draw_point)
-			{
-				Vector2 currpos = GetMousePosition();
-				DrawCircleV(currpos, asettings.thickness / 2, asettings.fgcolor);
-
-				if (lastpos.x != -1 && lastpos.y != -1)
-					DrawLineEx(lastpos, currpos, asettings.thickness, asettings.fgcolor);
-
-				lastpos = currpos;
-			}
-
-		EndTextureMode();
+		if (should_draw_point)
+			paint(framebuffer, &lastpos, asettings);
 
 		Rectangle framebufferrect = {0, 0, (float) framebuffer.texture.width, (float) -framebuffer.texture.height};
 

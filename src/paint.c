@@ -14,6 +14,22 @@ void clearcanva(RenderTexture2D framebuffer, Color color)
 }
 
 
+void paint(RenderTexture2D framebuffer, Vector2 *lastpos, AppSettings asettings)
+{
+	Color color = asettings.brush == BRUSH_PEN ? asettings.fgcolor : asettings.bgcolor;
+	Vector2 currpos = GetMousePosition();
+
+	BeginTextureMode(framebuffer);
+		DrawCircleV(currpos, asettings.thickness / 2, color);
+
+		if (lastpos->x != -1 && lastpos->y != -1)
+			DrawLineEx(*lastpos, currpos, asettings.thickness, color);
+
+		*lastpos = currpos;
+	EndTextureMode();
+}
+
+
 void change_color(Color *color, char *colorstr)
 {
 	if (color == NULL || colorstr == NULL)

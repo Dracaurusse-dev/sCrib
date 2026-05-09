@@ -68,6 +68,15 @@ void handle_command(InputSettings *isettings, AppSettings *asettings)
 		case 't':
 			change_thickness(asettings, cmd[1]);
 			break;
+		case 'p':
+			asettings->brush = BRUSH_PEN;
+			break;
+		case 'e':
+			asettings->brush = BRUSH_ERASER;
+			break;
+		case 'q':
+			asettings->should_exit = 1;
+			break;
 
 		default:
 			break;
