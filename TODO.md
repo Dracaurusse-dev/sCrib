@@ -1,0 +1,1 @@
+- Add a settings to change binds, default binds will be made for azerty keyboard
