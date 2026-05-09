@@ -1,26 +1,53 @@
+#include "paint.h"
+#include "movements.h"
+#include "stringutils.h"
+
 #include "raylib.h"
 
 #include <stdio.h>
+#include <stdlib.h>
 #include <stdint.h>
+#include <string.h>
 
 
 #define WIDTH 900
 #define HEIGHT 600
+#define MAX_COMMAND_LENGTH 32
 
 
 int main(void)
 {
 	Vector2 vec2ZERO = {0, 0};
 	Vector2 lastpos = {-1, -1};
-	int32_t thickness = 3;
+
+	AppSettings asettings = 
+	{
+		.fgcolor = WHITE,
+		.bgcolor = BLACK,
+		.thickness = 3,
+	};
+
+	InputSettings isettings = 
+	{
+		.cantype = 0,
+		.can_process_cmd = 0,
+		.commandlen = MAX_COMMAND_LENGTH,
+		.command = (char *) calloc(MAX_COMMAND_LENGTH, sizeof(char)),
+		.lettercount = 0,
+	};
 
 	InitWindow(WIDTH, HEIGHT, "sCrib");
 
 	SetTargetFPS(60);
 	RenderTexture2D framebuffer = LoadRenderTexture(WIDTH, HEIGHT);
 
+	clearcanva(framebuffer, asettings.bgcolor);
+
 	while (!WindowShouldClose())
 	{
+		handle_input(&isettings);
+		handle_command(&isettings, &asettings);
+
 		uint8_t should_draw_point = IsMouseButtonDown(MOUSE_BUTTON_LEFT);
 		if (IsMouseButtonReleased(MOUSE_BUTTON_LEFT))
 		{
@@ -33,10 +60,10 @@ int main(void)
 			if (should_draw_point)
 			{
 				Vector2 currpos = GetMousePosition();
-				DrawCircleV(currpos, thickness / 2, RED);
+				DrawCircleV(currpos, asettings.thickness / 2, asettings.fgcolor);
 
 				if (lastpos.x != -1 && lastpos.y != -1)
-					DrawLineEx(lastpos, currpos, thickness, RED);
+					DrawLineEx(lastpos, currpos, asettings.thickness, asettings.fgcolor);
 
 				lastpos = currpos;
 			}
@@ -47,13 +74,17 @@ int main(void)
 
 		BeginDrawing();
 
-			DrawTextureRec(framebuffer.texture, framebufferrect , vec2ZERO, WHITE);
+			DrawTextureRec(framebuffer.texture, framebufferrect, vec2ZERO, WHITE);
+
+			if (isettings.lettercount > 0)
+				DrawText(TextFormat(":%s", isettings.command), 5, 5, 24, WHITE);
 			
 		EndDrawing();
 
 	}
 
 	CloseWindow();
+	free(isettings.command);
 
 	return 0;
 }
