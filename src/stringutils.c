@@ -3,6 +3,7 @@
 #include <math.h>
 #include <stdlib.h>
 #include <string.h>
+#include <ctype.h>
 
 
 char **getcmd(char *cmd, size_t cmdlen)
@@ -39,4 +40,17 @@ uint8_t startswith(char *s1, char *s2)
 {
 	size_t len = (size_t) fmin((double) strlen(s1), (double) strlen(s2));
 	return strncmp(s1, s2, len) == 0;
+}
+
+
+uint8_t strtou8(char *s)
+{
+	char *c;
+	for (c = s; *c; c++)
+	{
+		if (!isdigit(*c))
+			return 0L;
+	}
+
+	return (uint8_t) strtoul(s, 0L, 10);
 }

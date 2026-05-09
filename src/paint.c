@@ -37,3 +37,11 @@ void change_color(Color *color, char *colorstr)
 		fprintf(stderr, "Unknown color: %s\n", colorstr);
 }
 
+
+void change_thickness(AppSettings *asettings, char *thickstr)
+{
+	uint8_t thick = strtou8(thickstr);
+	if (thick == 0)
+		return;
+	asettings->thickness = thick;
+}

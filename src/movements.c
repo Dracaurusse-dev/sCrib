@@ -65,6 +65,9 @@ void handle_command(InputSettings *isettings, AppSettings *asettings)
 			change_color(&asettings->bgcolor, cmd[1]);
 			asettings->should_clear = 1;
 			break;
+		case 't':
+			change_thickness(asettings, cmd[1]);
+			break;
 
 		default:
 			break;

@@ -22,6 +22,7 @@ typedef struct
 void clearcanva(RenderTexture2D framebuffer, Color color);
 
 void change_color(Color *color, char *colorstr);
+void change_thickness(AppSettings *asettings, char *thickstr);
 
 
 #endif  // PAINT_H
