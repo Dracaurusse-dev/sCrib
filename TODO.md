@@ -1,3 +1,2 @@
-- Add brushes (pen and eraser, can change their shape with :s shape, eraser cant change color, it is always bgcolor)
 - Add shapes
 - Add a settings to change binds, default binds will be made for azerty keyboard

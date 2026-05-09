@@ -81,8 +81,8 @@ int main(void)
 
 			DrawTextureRec(framebuffer.texture, framebufferrect, vec2ZERO, WHITE);
 
-			if (isettings.lettercount > 0)
-				DrawText(TextFormat(":%s", isettings.command), 5, asettings.height - 24, 24, WHITE);
+			if (isettings.cantype)
+				DrawText(TextFormat(":%s", isettings.command), 10, asettings.height - 24, 24, WHITE);
 			
 		EndDrawing();
 
