@@ -10,8 +10,6 @@
 #include <string.h>
 
 
-#define WIDTH 900
-#define HEIGHT 600
 #define MAX_COMMAND_LENGTH 32
 
 
@@ -25,6 +23,8 @@ int main(void)
 		.fgcolor = WHITE,
 		.bgcolor = BLACK,
 		.thickness = 3,
+		.width = 900,//GetScreenWidth(),
+		.height = 600,//GetScreenHeight(),
 	};
 
 	InputSettings isettings = 
@@ -36,10 +36,16 @@ int main(void)
 		.lettercount = 0,
 	};
 
-	InitWindow(WIDTH, HEIGHT, "sCrib");
+	InitWindow(asettings.width, asettings.height, "sCrib");
+
+	int32_t display = GetCurrentMonitor();
+	asettings.width = GetMonitorWidth(display);
+	asettings.height = GetMonitorHeight(display);
+	SetWindowSize(asettings.width, asettings.height);
+	ToggleFullscreen();
 
 	SetTargetFPS(60);
-	RenderTexture2D framebuffer = LoadRenderTexture(WIDTH, HEIGHT);
+	RenderTexture2D framebuffer = LoadRenderTexture(asettings.width, asettings.height);
 
 	clearcanva(framebuffer, asettings.bgcolor);
 
@@ -77,12 +83,13 @@ int main(void)
 			DrawTextureRec(framebuffer.texture, framebufferrect, vec2ZERO, WHITE);
 
 			if (isettings.lettercount > 0)
-				DrawText(TextFormat(":%s", isettings.command), 5, 5, 24, WHITE);
+				DrawText(TextFormat(":%s", isettings.command), 5, asettings.height - 24, 24, WHITE);
 			
 		EndDrawing();
 
 	}
 
+	UnloadRenderTexture(framebuffer);
 	CloseWindow();
 	free(isettings.command);
 
