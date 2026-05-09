@@ -12,6 +12,7 @@ typedef struct
 {
 	uint8_t cantype;
 	uint8_t can_process_cmd;
+	uint8_t is_command_ready;
 	size_t commandlen;
 	size_t lettercount;
 	char *command;

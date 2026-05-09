@@ -14,7 +14,7 @@ void clearcanva(RenderTexture2D framebuffer, Color color)
 }
 
 
-void change_fgcolor(Color *color, char *colorstr)
+void change_color(Color *color, char *colorstr)
 {
 	if (color == NULL || colorstr == NULL)
 		return;
@@ -23,7 +23,7 @@ void change_fgcolor(Color *color, char *colorstr)
 		*color = RED;
 	else if (startswith(colorstr, "white") || startswith(colorstr, "w"))
 		*color = WHITE;
-	else if (startswith(colorstr, "blue") || startswith(colorstr, "b"))
+	else if (startswith(colorstr, "blue") || startswith(colorstr, "B"))
 		*color = BLUE;
 	else if (startswith(colorstr, "yellow") || startswith(colorstr, "y"))
 		*color = YELLOW;
@@ -31,6 +31,8 @@ void change_fgcolor(Color *color, char *colorstr)
 		*color = PINK;
 	else if (startswith(colorstr, "green") || startswith(colorstr, "g"))
 		*color = GREEN;
+	else if (startswith(colorstr, "black") || startswith(colorstr, "b"))
+		*color = BLACK;
 	else
 		fprintf(stderr, "Unknown color: %s\n", colorstr);
 }

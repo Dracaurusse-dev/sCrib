@@ -23,6 +23,7 @@ void handle_input(InputSettings *isettings)
 	{
 		isettings->cantype = 0;
 		isettings->lettercount = 0;
+		isettings->is_command_ready = 1;
 		return;
 	}
 
@@ -50,11 +51,19 @@ void handle_input(InputSettings *isettings)
 
 void handle_command(InputSettings *isettings, AppSettings *asettings)
 {
+	if (!isettings->is_command_ready)
+		return;
+	isettings->is_command_ready = 0;
+
 	char **cmd = getcmd(isettings->command, isettings->commandlen);
 	switch (cmd[0][0])
 	{
 		case 'c':
-			change_fgcolor(&asettings->fgcolor, cmd[1]);
+			change_color(&asettings->fgcolor, cmd[1]);
+			break;
+		case 'b':
+			change_color(&asettings->bgcolor, cmd[1]);
+			asettings->should_clear = 1;
 			break;
 
 		default:

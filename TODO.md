@@ -1,3 +1,2 @@
-- Fullscreen or dynamic screensize
 - Change thickness, bgcolor and fgcolor commands
 - Add a settings to change binds, default binds will be made for azerty keyboard

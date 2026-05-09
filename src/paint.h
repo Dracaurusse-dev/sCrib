@@ -16,11 +16,12 @@ typedef struct
 	Color bgcolor;
 	int32_t thickness;
 	int32_t width, height;
+	uint8_t should_clear;
 } AppSettings;
 
 void clearcanva(RenderTexture2D framebuffer, Color color);
 
-void change_fgcolor(Color *color, char *colorstr);
+void change_color(Color *color, char *colorstr);
 
 
 #endif  // PAINT_H

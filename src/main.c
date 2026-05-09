@@ -23,8 +23,9 @@ int main(void)
 		.fgcolor = WHITE,
 		.bgcolor = BLACK,
 		.thickness = 3,
-		.width = 900,//GetScreenWidth(),
-		.height = 600,//GetScreenHeight(),
+		.width = 900,
+		.height = 600,
+		.should_clear = 0,
 	};
 
 	InputSettings isettings = 
@@ -34,6 +35,7 @@ int main(void)
 		.commandlen = MAX_COMMAND_LENGTH,
 		.command = (char *) calloc(MAX_COMMAND_LENGTH, sizeof(char)),
 		.lettercount = 0,
+		.is_command_ready = 0,
 	};
 
 	InitWindow(asettings.width, asettings.height, "sCrib");
@@ -63,6 +65,9 @@ int main(void)
 
 		BeginTextureMode(framebuffer);
 
+			if (asettings.should_clear)
+				ClearBackground(asettings.bgcolor);
+
 			if (should_draw_point)
 			{
 				Vector2 currpos = GetMousePosition();
@@ -73,7 +78,7 @@ int main(void)
 
 				lastpos = currpos;
 			}
-			
+
 		EndTextureMode();
 
 		Rectangle framebufferrect = {0, 0, (float) framebuffer.texture.width, (float) -framebuffer.texture.height};
