@@ -1,2 +1,3 @@
-- Add shapes
+- Add Shape
+- Handle n gon brush shapes
 - Add a settings to change binds, default binds will be made for azerty keyboard

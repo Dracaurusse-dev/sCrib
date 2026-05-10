@@ -61,7 +61,10 @@ void handle_command(InputSettings *isettings, AppSettings *asettings)
 	switch (cmd[0][0])
 	{
 		case 'q':
-			asettings->should_exit = 1;
+			if (asettings->should_show_help)
+				asettings->should_show_help = 0;
+			else
+				asettings->should_exit = 1;
 			break;
 		case 's':  // FIXME: q and s dont work, q used to
 			change_shape(asettings, cmd[1]);
@@ -85,6 +88,9 @@ void handle_command(InputSettings *isettings, AppSettings *asettings)
 		case 'r':
 			change_rotation(asettings, cmd[1]);
 			break;
+		case 'h':
+			asettings->should_show_help = 1;
+			break;
 
 		default:
 			fprintf(stderr, "unknown command: %c\n", cmd[0][0]);
@@ -94,3 +100,4 @@ void handle_command(InputSettings *isettings, AppSettings *asettings)
 	memset(isettings->command, 0, isettings->commandlen);
 	free(cmd);  // TODO: check if it actually frees allocated memory { char*; char* ...};
 }
+

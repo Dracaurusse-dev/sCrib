@@ -28,6 +28,7 @@ int main(void)
 		.should_clear = 0,
 		.brush = BRUSH_PEN,
 		.should_exit = 0,
+		.should_show_help = 0,
 	};
 
 	InputSettings isettings = 
@@ -51,8 +52,10 @@ int main(void)
 
 	SetTargetFPS(60);
 	RenderTexture2D framebuffer = LoadRenderTexture(asettings.width, asettings.height);
+	RenderTexture2D helpbuffer  = LoadRenderTexture(asettings.width, asettings.height);
 
 	clearcanva(&framebuffer, asettings.bgcolor);
+	inithelpbuf(&helpbuffer);
 
 	while (!WindowShouldClose() && !asettings.should_exit)
 	{
@@ -75,12 +78,13 @@ int main(void)
 		if (should_draw_point)
 			paint(&framebuffer, &lastpos, asettings);
 
-		Rectangle framebufferrect = {0, 0, (float) framebuffer.texture.width, (float) -framebuffer.texture.height};
+		Texture2D drawntexture = asettings.should_show_help ? helpbuffer.texture : framebuffer.texture;
+		Rectangle bufferrect = {0, 0, (float) drawntexture.width, (float) -drawntexture.height};
 
 		BeginDrawing();
 
-			DrawTextureRec(framebuffer.texture, framebufferrect, vec2ZERO, WHITE);
 
+			DrawTextureRec(drawntexture, bufferrect, vec2ZERO, WHITE);
 			if (isettings.cantype)
 				DrawText(TextFormat(":%s", isettings.command), 10, asettings.height - 24, 24, WHITE);
 			

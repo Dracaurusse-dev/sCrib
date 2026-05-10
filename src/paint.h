@@ -33,11 +33,13 @@ typedef struct
 	Brush brush;
 	Shape shape;
 	uint8_t should_clear;
+	uint8_t should_show_help;
 	uint8_t should_exit;
 } AppSettings;
 
 
 void clearcanva(RenderTexture2D *framebuffer, Color color);
+void inithelpbuf(RenderTexture2D *helpbuffer);
 void paint(RenderTexture2D *framebuffer, Vector2 *lastpos, AppSettings asettings);
 void drawdotshape(int32_t thickness, Color color, Shape shape, Vector2 pos, float rot);
 

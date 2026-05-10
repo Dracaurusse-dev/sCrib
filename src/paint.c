@@ -15,6 +15,19 @@ void clearcanva(RenderTexture2D *framebuffer, Color color)
 }
 
 
+void inithelpbuf(RenderTexture2D *helpbuffer)
+{
+	clearcanva(helpbuffer, BLACK);
+
+	BeginTextureMode(*helpbuffer);
+
+		DrawText("Exit this help by pressing q", 10, 10, 24, WHITE);
+		DrawText("Here's the manual:\nPress ':' (, on qwerty) to start a command.\nCommands are:\nq to quit\np to use the pen\ne to use the eraser\nc color to change pen color\nb color to wipe the background to color\ns shape (circle, square or triangle) to change brush shape\nh to show this help\nt thick to change brushe's thickness to thick\nr rot to change rotation of some shapes", 50, 50, 24, WHITE);
+
+	EndTextureMode();
+}
+
+
 void drawdotshape(int32_t thickness, Color color, Shape shape, Vector2 lastpos, float rot)
 {
 	switch (shape)
