@@ -52,7 +52,7 @@ int main(void)
 	SetTargetFPS(60);
 	RenderTexture2D framebuffer = LoadRenderTexture(asettings.width, asettings.height);
 
-	clearcanva(framebuffer, asettings.bgcolor);
+	clearcanva(&framebuffer, asettings.bgcolor);
 
 	while (!WindowShouldClose() && !asettings.should_exit)
 	{
@@ -68,12 +68,12 @@ int main(void)
 
 		if (asettings.should_clear)
 		{
-			clearcanva(framebuffer, asettings.bgcolor);
+			clearcanva(&framebuffer, asettings.bgcolor);
 			asettings.should_clear = 0;
 		}
 
 		if (should_draw_point)
-			paint(framebuffer, &lastpos, asettings);
+			paint(&framebuffer, &lastpos, asettings);
 
 		Rectangle framebufferrect = {0, 0, (float) framebuffer.texture.width, (float) -framebuffer.texture.height};
 

@@ -4,23 +4,45 @@
 #include "raylib.h"
 
 #include <stdio.h>
+#include <stdlib.h>
 
 
-void clearcanva(RenderTexture2D framebuffer, Color color)
+void clearcanva(RenderTexture2D *framebuffer, Color color)
 {
-	BeginTextureMode(framebuffer);
+	BeginTextureMode(*framebuffer);
 		ClearBackground(color);
 	EndTextureMode();
 }
 
 
-void paint(RenderTexture2D framebuffer, Vector2 *lastpos, AppSettings asettings)
+void drawdotshape(int32_t thickness, Color color, Shape shape, Vector2 lastpos, float rot)
+{
+	switch (shape)
+	{
+		case SHAPE_CIRCLE:
+			DrawCircleV(lastpos, thickness, color);
+			break;
+		case SHAPE_SQUARE:
+			DrawPoly(lastpos, 4, thickness, rot, color);
+			break;
+		case SHAPE_TRIANGLE:
+			DrawPoly(lastpos, 3, thickness, rot, color);
+			break;
+
+		default:
+			DrawCircleV(lastpos, thickness, color);
+			break;
+	}
+}
+
+
+void paint(RenderTexture2D *framebuffer, Vector2 *lastpos, AppSettings asettings)
 {
 	Color color = asettings.brush == BRUSH_PEN ? asettings.fgcolor : asettings.bgcolor;
 	Vector2 currpos = GetMousePosition();
 
-	BeginTextureMode(framebuffer);
-		DrawCircleV(currpos, asettings.thickness / 2, color);
+	BeginTextureMode(*framebuffer);
+		drawdotshape(asettings.thickness / 2, color, asettings.shape, currpos, asettings.rotation);
 
 		if (lastpos->x != -1 && lastpos->y != -1)
 			DrawLineEx(*lastpos, currpos, asettings.thickness, color);
@@ -60,4 +82,24 @@ void change_thickness(AppSettings *asettings, char *thickstr)
 	if (thick == 0)
 		return;
 	asettings->thickness = thick;
+}
+
+
+void change_shape(AppSettings *asettings, char *shape)
+{
+	if (startswith(shape, "square"))
+		asettings->shape = SHAPE_SQUARE;
+	else if (startswith(shape, "circle"))
+		asettings->shape = SHAPE_CIRCLE;
+	else if (startswith(shape, "triangle"))
+		asettings->shape = SHAPE_TRIANGLE;
+	else
+		asettings->shape = SHAPE_CIRCLE;
+}
+
+
+void change_rotation(AppSettings *asettings, char *rotstr)
+{
+	float rot = strtof(rotstr, NULL);
+	asettings->rotation = rot;
 }

@@ -6,6 +6,7 @@
 
 #include <stdio.h>
 #include <stdint.h>
+#include <string.h>
 #include <stdlib.h>
 
 
@@ -33,6 +34,7 @@ void handle_input(InputSettings *isettings)
 			(isettings->lettercount)--;
 
 		isettings->command[isettings->lettercount] = 0;
+		return;
 	}
 
 	while (key > 0 && isettings->cantype)
@@ -58,6 +60,12 @@ void handle_command(InputSettings *isettings, AppSettings *asettings)
 	char **cmd = getcmd(isettings->command, isettings->commandlen);
 	switch (cmd[0][0])
 	{
+		case 'q':
+			asettings->should_exit = 1;
+			break;
+		case 's':  // FIXME: q and s dont work, q used to
+			change_shape(asettings, cmd[1]);
+			break;
 		case 'c':
 			change_color(&asettings->fgcolor, cmd[1]);
 			break;
@@ -74,13 +82,15 @@ void handle_command(InputSettings *isettings, AppSettings *asettings)
 		case 'e':
 			asettings->brush = BRUSH_ERASER;
 			break;
-		case 'q':
-			asettings->should_exit = 1;
+		case 'r':
+			change_rotation(asettings, cmd[1]);
 			break;
 
 		default:
+			fprintf(stderr, "unknown command: %c\n", cmd[0][0]);
 			break;
 	}
 
+	memset(isettings->command, 0, isettings->commandlen);
 	free(cmd);  // TODO: check if it actually frees allocated memory { char*; char* ...};
 }
